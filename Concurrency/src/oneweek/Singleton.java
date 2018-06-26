@@ -15,12 +15,13 @@ package oneweek;
  * Created by zslzz on 2018/6/2.
  */
 
-public class Singleton {
-    private volatile static Singleton singleton1;
+//反序列化会破坏Singleton，主要原因在于反序列化时会通过反射调用无参构造方法生成新的对象。
+ class Singleton {
+    private volatile static Singleton singleton1; //volatile保证了初始化时赋值的重排序问题
     private Singleton(){}
     public static Singleton getSingletonDemo7(){
         if (singleton1 == null) {
-            synchronized (Singleton.class) {
+            synchronized (Singleton.class) { //保证后续操作的原子性
                 if (singleton1 == null) {
                     singleton1 = new Singleton();
                 }
@@ -28,4 +29,10 @@ public class Singleton {
         }
         return singleton1;
     }
+}
+enum SingletonEnum{
+     instance;
+     public void dowhatever(){
+         System.out.print('h');
+     }
 }
